@@ -1,0 +1,71 @@
+/* Estilos para centrar secciones y ajustar a dispositivos móviles */
+section {
+  text-align: center;
+}
+
+h1{
+  margin-bottom: 120px;
+}
+h2 {
+  margin-top: 20px;
+}
+
+ul#playlist {
+  list-style: none;
+  padding: 0;
+  margin-top: 0px;
+  margin-bottom: 160px;
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos fluyan en varias filas */
+  justify-content: center; /* Centra los elementos horizontalmente */
+}
+
+li#liplay {
+  margin: 10px; /* Espacio entre las canciones */
+  width: 250px; /* Ancho de cada elemento en la vista de PC */
+}
+
+#reproductor {
+  text-align: center;
+  background-color: #1d3b2c;
+  color: #fff;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+#li {
+  background-color: #3498db;
+}
+
+button {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+audio {
+  width: 100%;
+  max-width: 300px;
+  margin: 10px 0;
+}
+
+/* Estilos para dispositivos móviles */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 24px;
+  }
+
+  ul#playlist {
+    padding: 5px;
+  flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #reproductor {
+    font-size: 18px;
+    padding: 20px;
+  }
+}
