@@ -32,6 +32,11 @@ p {
     font-size: 16px;
 }
 
+#cargar{
+    margin-top: 250px;
+    margin-left: 350px;
+}
+
 @media (max-width: 768px) {
     .container {
         grid-template-columns: 1fr;
