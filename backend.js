@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path'); // Agregamos la biblioteca 'path' para trabajar con rutas de archivos
 const app = express();
-const port = 3001; // Puedes cambiar el puerto si es necesario
+const port = 3001; 
 
 app.use(cors());
 
@@ -26,7 +26,7 @@ app.get('/api/songs', (req, res) => {
   res.json(songs);
 });
 
-// Configuramos Express para servir los archivos de canciones estáticas
+//Uso de express
 app.use(express.static(path.join(__dirname, 'songs'))); 
 
 // Datos de ejemplo de noticias
@@ -74,7 +74,7 @@ const noticias = [
     link: "https://www.theweeknd.com/news/the-weeknd-announces-2023-europe-and-latin-america-dates-for-after-hours-til-dawn-stadium-tour/"
   }
   
-  // Agrega más noticias aquí
+ 
 ];
 
 app.get('/api/noticias', (req, res) => {
