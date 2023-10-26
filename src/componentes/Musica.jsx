@@ -1,61 +1,66 @@
-import React, { useState } from "react";
-import '../Estilos/musica.css';
-import Nav from './nav';
+import React, { useState, useEffect } from "react";
+import "../Estilos/musica.css";
+import Nav from "./nav";
 
 const AudioPlayer = () => {
-  const [kendrickSongs, setKendrickSongs] = useState([]);
-  const [theWeekndSongs, setTheWeekndSongs] = useState([]);
+  const [songs, setSongs] = useState([]);
   const [currentSong, setCurrentSong] = useState(null);
-  const [playlistsLoaded, setPlaylistsLoaded] = useState(false);
-
-  const loadPlaylists = () => {
-    // Realiza la solicitud GET al servidor para obtener las canciones
-    fetch('http://localhost:3001/api/songs')
-      .then(response => response.json())
-      .then(data => {
-        setKendrickSongs(data.kendrick);
-        setTheWeekndSongs(data.theWeeknd);
-        setPlaylistsLoaded(true); // Marca que las listas de reproducción se han cargado
-      })
-      .catch(error => console.error('Error al obtener las canciones:', error));
-  };
+  const [error, setError] = useState(null);
+  const [isPlaylistVisible, setIsPlaylistVisible] = useState(false);
 
   const playSong = (song) => {
     setCurrentSong(song);
   };
 
-  const renderPlaylist = (playlist) => {
-    return (
-      <ul id="playlist">
-        {playlist.map((song) => (
-          <li id="liplay" key={song.id}>
-            <button onClick={() => playSong(song)}>{song.title}</button>
-          </li>
-        ))}
-      </ul>
-    );
+  const togglePlaylistVisibility = () => {
+    setIsPlaylistVisible(!isPlaylistVisible);
   };
+
+  useEffect(() => {
+    // Hacer una solicitud GET para obtener la lista de canciones desde el servidor
+    fetch("http://localhost:3001/api/canciones")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("No se pudieron cargar las canciones");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setSongs(data);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  }, []);
 
   return (
     <div>
       <Nav />
-      <h1>Haz click en el botón para cargar las listas de reproducción</h1>
-      {!playlistsLoaded && (
-        <button onClick={loadPlaylists}>Cargar Listas de Reproducción</button>
+      <h1>Haz click en una canción para reproducirla</h1>
+      <button onClick={togglePlaylistVisibility}>
+        {isPlaylistVisible ? "Ocultar Playlist" : "Cargar Música"}
+      </button>
+      {error && <p>Error: {error}</p>}
+      {isPlaylistVisible && (
+        <div>
+          <h2>Playlist de Todas las Canciones</h2>
+          <ul id="playlist">
+            {songs.map((song, index) => (
+              <li key={index}>
+                <button onClick={() => playSong(song)}>{song.title}</button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
-      {playlistsLoaded && (
-        <>
-          <h2>Playlist de Kendrick Lamar</h2>
-          {renderPlaylist(kendrickSongs)}
-          <h2>Playlist de The Weeknd</h2>
-          {renderPlaylist(theWeekndSongs)}
-          {currentSong && (
-            <div id="reproductor">
-              <h3>Reproduciendo: {currentSong.title}</h3>
-              <audio controls src={`http://localhost:3001/${currentSong.filename}`}></audio>
-            </div>
-          )}
-        </>
+      {currentSong && (
+        <div id="reproductor">
+          <h3>Reproduciendo: {currentSong.title}</h3>
+          <audio
+            controls
+            src={`http://localhost:3001/canciones/${currentSong.filename}`}
+          ></audio>
+        </div>
       )}
     </div>
   );
