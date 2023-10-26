@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Nav from './nav';
-import "../Estilos/noticias.css"; // Importa el archivo CSS
-import axios from 'axios'; // Asegúrate de tener instalada la biblioteca axios
+import "../Estilos/noticias.css"; 
+import axios from 'axios'; 
 
 function Noticias() {
   const [noticias, setNoticias] = useState([]);

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Estilos/biografias.css'; // Importa el archivo CSS
+import '../Estilos/biografias.css'; 
 import Nav from './nav';
 function Biografias() {
   return (
