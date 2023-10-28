@@ -1,34 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Nav from './nav';
 import "../Estilos/noticias.css"; 
-import axios from 'axios'; 
 
 function Noticias() {
   const [noticias, setNoticias] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
   const loadNoticias = () => {
-    // Realiza una solicitud para obtener las noticias desde el servidor
-    axios.get('http://localhost:3001/api/noticias')
+    fetch('http://localhost:3001/api/noticias')
       .then(response => {
-        setNoticias(response.data);
-        setLoaded(true);
+        if (!response.ok) {
+          throw new Error('Error al obtener las noticias');
+        }
+        return response.json(); // Analiza la respuesta JSON
+      })
+      .then(data => {
+        if (Array.isArray(data)) {
+          setNoticias(data);
+          setLoaded(true);
+        } else {
+          throw new Error('Respuesta no válida');
+        }
       })
       .catch(error => console.error('Error al obtener las noticias:', error));
   };
+
+  // Cargar noticias al montar el componente
+  useEffect(() => {
+    loadNoticias();
+  }, []);
 
   return (
     <div>
       <Nav />
       <div className="container">
         {loaded ? (
-          noticias.map((noticia) => (
-            <div className="card" key={noticia.id}>
-              <img src={noticia.imageUrl} alt={noticia.title} />
+          noticias.map((noticia, index) => (
+            <div className="card" key={index}>
+              <img src={noticia.ImageURL} alt={noticia.Title} />
               <div className="card-content">
-                <h2>{noticia.title}</h2>
-                <p>{noticia.description}</p>
-                <a className="enlace-azul" href={noticia.link}>
+                <h2>{noticia.Title}</h2>
+                <p>{noticia.Description}</p>
+                <a className="enlace-azul" href={noticia.Link}>
                   Leer mas...
                 </a>
               </div>
